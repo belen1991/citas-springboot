@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Citas List</title>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <h1>Citas List</h1>
+    <a th:href="@{/createCitaForm}" class="btn btn-primary">Crear nueva Cita</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Medico</th>
+                <th>Paciente</th>
+                <th>Reagendar</th>
+                <th>Cancelar</th>
+                <th>Acciones</th>
+                <th>Mensaje Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cita, index : ${citas}">
+                <td th:text="${cita.tipo}"></td>
+                <td th:text="${cita.paciente}"></td>
+                <td>
+                    <a href="#" class="btn btn-primary"
+                        th:id="@{'reagendar_'+${index.index}}" 
+                        onclick="
+                        reagendar(this)">Reagendar</a></td>
+                <td>
+                    <a href="#" class="btn btn-primary"
+                        th:id="@{'cancelar_'+${index.index}}" 
+                        onclick="
+                        cancelar(this)">Cancelar</a></td>
+                <td>
+                    <a href="#" class="btn btn-primary"
+                        th:id="@{'acciones_'+${index.index}}" 
+                        onclick="
+                        acciones(this)">Acciones</a></td>
+                <td>
+                    <span th:id="@{'mensajeResult_'+${index.index}}"></span>
+                </td>
+            </tr>            
+        </tbody>
+    </table>
+</body>
+</html>
+
+<script>
+    function reagendar(linkElement) {
+        var match = linkElement.getAttribute("id").match(/\d+/);
+        var citaId = 0;
+        if (match) {
+            citaId = parseInt(match[0], 10);
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/reagendar',
+            data: {
+                index: parseInt(citaId)
+            },
+            success: function (result) {
+                $('#mensajeResult_' + citaId).text(result);
+
+                $(linkElement).addClass('disabled');
+            },
+            error: function () {
+                alert('Error reagendando.');
+            }
+        });
+    }
+    function cancelar(linkElement) {
+        var match = linkElement.getAttribute("id").match(/\d+/);
+        var citaId = 0;
+        if (match) {
+            citaId = parseInt(match[0], 10);
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/cancelar',
+            data: {
+                index: parseInt(citaId)
+            },
+            success: function (result) {
+                $('#mensajeResult_' + citaId).text(result);
+
+                $(linkElement).addClass('disabled');
+            },
+            error: function () {
+                alert('Error cancelando.');
+            }
+        });
+    }
+    function acciones(linkElement) {
+        var match = linkElement.getAttribute("id").match(/\d+/);
+        var citaId = 0;
+        if (match) {
+            citaId = parseInt(match[0], 10);
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/acciones',
+            data: {
+                index: parseInt(citaId)
+            },
+            success: function (result) {
+                $('#mensajeResult_' + citaId).text(result);
+
+                $(linkElement).addClass('disabled');
+            },
+            error: function () {
+                alert('Error acciones.');
+            }
+        });
+    }
+</script>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Create Cita</title>
+</head>
+<body>
+    <h1>Create Cita</h1>
+    <form action="/createCita" method="post" th:object="${citasDTO}">
+        <label for="type">Elegir Medico:</label>
+        <select id="tipo" name="tipo" th:field="*{tipo}">
+            <option th:each="tipoMedico : ${T(com.ups.medicos.backend.enums.MedicosEnum).values()}"
+                    th:value="${tipoMedico}" th:text="${tipoMedico}"></option>
+        </select>
+        <br>
+        <label for="paciente">Paciente:</label>
+        <input type="text" id="paciente" name="paciente" th:field="*{paciente}">
+        <br>
+        <button type="submit">Create Cita</button>
+    </form>
+</body>
+</html>
