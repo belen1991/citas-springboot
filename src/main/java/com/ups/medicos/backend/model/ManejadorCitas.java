@@ -29,7 +29,7 @@ public class ManejadorCitas implements Mediator {
                 mensaje += " deriva a un especialista a "+remitente.getPaciente();
                 break;
             case EXAMENES:
-			    mensaje += " indicq que " + remitente.getPaciente() +" necesita examenes";
+			    mensaje += " indica que " + remitente.getPaciente() +" necesita examenes";
                 break;
             case REAGENDAR:
                 mensaje = remitente.getPaciente() + " ha reagendado la cita con "+mensaje;
